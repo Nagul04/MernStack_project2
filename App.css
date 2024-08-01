@@ -1,0 +1,135 @@
+/* App.css */
+
+.app {
+  display: flex;
+}
+
+.content {
+  margin-left: 80px; /* Increased to accommodate larger navbar */
+  width: calc(100% - 80px); /* Adjusted width */
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.stories, .feed {
+  margin-top: 20px;
+}
+
+.feed {
+  padding: 20px 0;
+  margin-top: 60px;
+  padding-bottom: 60px;
+}
+
+/* Post.css */
+
+.post {
+  margin: 10px; /* Reduced margin */
+  padding: 8px; /* Reduced padding */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  width: 90%; /* Reduced width */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow */
+  max-width: 500px; /* Set a max-width */
+  margin: 10px auto; /* Center the posts */
+}
+
+.post-header img {
+  width: 30px; /* Reduced avatar size */
+  height: 30px; /* Adjust height */
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.post-footer {
+  margin-top: 10px;
+}
+
+.post-actions button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Navbar.css */
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80px; /* Increased width */
+  height: 100%;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  padding-top: 30px; /* Increased padding */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0; /* Increased padding for larger icons */
+}
+
+.navbar-item img {
+  width: 28px; /* Slightly increased icon size */
+  height: 28px;
+}
+
+.navbar-item span {
+  margin-top: 8px; /* Adjusted spacing */
+  font-size: 14px; /* Slightly increased font size */
+  color: #262626;
+}
+
+/* Stories.css */
+
+.stories {
+  display: flex;
+  overflow-x: scroll;
+  padding: 10px 0;
+  background-color: #fff;
+  border-bottom: 1px solid #dbdbdb;
+  margin-top: 60px;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.stories::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.story {
+  margin-right: 10px;
+  text-align: center;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.story img {
+  border-radius: 50%;
+  border: 2px solid #dbdbdb;
+  width: 55px; /* Reduced size */
+  height: 55px;
+}
+
+.story span {
+  display: block;
+  font-size: 0.8em;
+  color: #262626;
+  margin-top: 5px;
+}
