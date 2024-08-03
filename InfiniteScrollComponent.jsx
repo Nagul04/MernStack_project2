@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Post from './Post';
 import './InfiniteScrollComponent.css';
-import MadhanImage from './MADHAN.png';
-import KJKRDASImage from './KJKRDAS.png';
-import NagulImage from './NAGUL.jpg';
-import Nagul2Image from './NAGUL2.png';
+import test1 from './test1.json';
+import test2 from './test2.json';
 
 const customPosts = [
-  { id: 1, url: MadhanImage },
-  { id: 2, url: KJKRDASImage },
-  { id: 3, url: NagulImage },
-  { id: 4, url: Nagul2Image }
+  { id: 1, url: test1.data[0].url },
+  { id: 2, url: test1.data[1].url },
+  { id: 3, url: test1.data[2].url },
+  { id: 4, url: test2.data.find(item => item.id === "yTvddccckkBAEM").url }
 ];
 
 const getRandomPosts = (posts) => {
@@ -27,42 +25,35 @@ const InfiniteScrollComponent = () => {
 
   const fetchPosts = async (page) => {
     setLoading(true);
-    const newPosts = customPosts.map(post => ({
-      ...post,
-      id: post.id + page * customPosts.length
-    }));
-    setPosts((prevPosts) => [...prevPosts, ...getRandomPosts(newPosts)]);
+    const newPosts = getRandomPosts(customPosts); 
+    setPosts((prevPosts) => [...prevPosts, ...newPosts]);
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (page > 1) fetchPosts(page);
-  }, [page]);
-
-  const lastPostRef = useCallback((node) => {
+  const lastPostElementRef = useCallback((node) => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();
-
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         setPage((prevPage) => prevPage + 1);
       }
     });
-
     if (node) observer.current.observe(node);
   }, [loading]);
 
+  useEffect(() => {
+    fetchPosts(page);
+  }, [page]);
+
   return (
-    <div className="feed-container">
-      <h1>Lynk</h1>
+    <div className="infinite-scroll-component">
       {posts.map((post, index) => {
         if (index === posts.length - 1) {
-          return <Post ref={lastPostRef} key={post.id} post={post} />;
-        } else {
-          return <Post key={post.id} post={post} />;
+          return <Post ref={lastPostElementRef} key={index} post={post} />;
         }
+        return <Post key={index} post={post} />;
       })}
-      {loading && <p>Loading...</p>}
+      {loading && <p>Loading more posts...</p>}
     </div>
   );
 };

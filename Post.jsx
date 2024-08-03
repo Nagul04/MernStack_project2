@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './Post.css';
 
 const friends = [
@@ -15,15 +15,13 @@ const friends = [
 ];
 
 const Post = React.forwardRef(({ post }, ref) => {
-  const [likes, setLikes] = useState(() => post.likes || Math.floor(Math.random() * 101));
+  // Randomly generate likes if not present
+  const [likes, setLikes] = useState(() => post.likes || Math.floor(Math.random() * 10000));
   const [hasLiked, setHasLiked] = useState(false);
   const [comment, setComment] = useState('');
-  const [commented, setCommented] = useState(false);
   const [comments, setComments] = useState(post.comments || []);
   const [showFriends, setShowFriends] = useState(false);
   const [showCommentBox, setShowCommentBox] = useState(false);
-  const [editingComment, setEditingComment] = useState(null);
-  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, index: null });
 
   const handleLike = () => {
     setLikes(hasLiked ? likes - 1 : likes + 1);
@@ -32,31 +30,9 @@ const Post = React.forwardRef(({ post }, ref) => {
 
   const handleComment = (e) => {
     e.preventDefault();
-    if (!commented) {
-      if (editingComment !== null) {
-        const updatedComments = comments.map((cmt, index) => index === editingComment ? comment : cmt);
-        setComments(updatedComments);
-        setEditingComment(null);
-      } else {
-        setComments([comment]);
-      }
-      setCommented(true);
-    }
+    setComments([...comments, comment]);
     setComment('');
     setShowCommentBox(false);
-  };
-
-  const handleEditComment = () => {
-    setComment(comments[contextMenu.index]);
-    setEditingComment(contextMenu.index);
-    setShowCommentBox(true);
-    setContextMenu({ ...contextMenu, visible: false });
-  };
-
-  const handleDeleteComment = () => {
-    setComments(comments.filter((_, i) => i !== contextMenu.index));
-    setCommented(false);
-    setContextMenu({ ...contextMenu, visible: false });
   };
 
   const handleShare = () => {
@@ -67,22 +43,6 @@ const Post = React.forwardRef(({ post }, ref) => {
     alert(`Shared with ${friend}`);
     setShowFriends(false);
   };
-
-  const handleContextMenu = (e, index) => {
-    e.preventDefault();
-    setContextMenu({ visible: true, x: e.clientX, y: e.clientY, index });
-  };
-
-  const handleClickOutside = (e) => {
-    if (contextMenu.visible && !e.target.closest('.context-menu')) {
-      setContextMenu({ ...contextMenu, visible: false });
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [contextMenu]);
 
   return (
     <div className="post" ref={ref}>
@@ -112,24 +72,17 @@ const Post = React.forwardRef(({ post }, ref) => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Add a comment..."
-              disabled={commented}
             />
-            <button type="submit">{editingComment !== null ? 'Update' : 'Post'}</button>
+            <button type="submit">Post</button>
           </form>
         )}
         <div className="post-comments">
           {comments.map((cmt, index) => (
-            <div key={index} className="comment" onContextMenu={(e) => handleContextMenu(e, index)}>
+            <div key={index} className="comment">
               <p>{cmt}</p>
             </div>
           ))}
         </div>
-        {contextMenu.visible && (
-          <div className="context-menu" style={{ top: contextMenu.y, left: contextMenu.x }}>
-            <button onClick={handleEditComment}>Edit</button>
-            <button onClick={handleDeleteComment}>Delete</button>
-          </div>
-        )}
         {showFriends && (
           <div className="friends-list">
             {friends.map((friend, index) => (
