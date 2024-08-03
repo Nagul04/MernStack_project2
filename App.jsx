@@ -13,10 +13,12 @@ import test7 from './test7.json';
 import test8 from './test8.json';
 import test9 from './test9.json'; 
 import test10 from './test10.json';  
+import test12 from './test12.json';  
 import './App.css';
 import Post from './Post';
 
 const App = () => {
+  const specificItem7 = test12.data.find(item => item.id === "sMYBIZFdHMI9eM");
   const specificItem0 = test0.data.find(item => item.id === "Mes6PiN6BLAtHM");
   const specificItem1 = test1.data.find(item => item.id === "isNAggf0I3HvxM");
   const specificItem2 = test3.data.find(item => item.id === "h2_kgVWyaj9dYM");
@@ -64,6 +66,18 @@ const App = () => {
                 title: specificItem0.title,
                 likes: specificItem0.likes,
                 comments: specificItem0.comments,
+              }}
+            />
+          )}
+           {specificItem7 && (
+            <Post
+              key={specificItem7.id}
+              post={{
+                id: specificItem7.id,
+                url: specificItem7.url,
+                title: specificItem7.title,
+                likes: specificItem7.likes,
+                comments: specificItem7.comments,
               }}
             />
           )}
